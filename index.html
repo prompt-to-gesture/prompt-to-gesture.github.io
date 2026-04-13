@@ -1,11 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coming Soon!</title>
-</head>
-<body>
 
-</body>
-</html>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .page { max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem; }
+  .conference { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-secondary); margin-bottom: 1rem; }
+  .title { font-size: 28px; font-weight: 500; color: var(--color-text-primary); line-height: 1.3; margin-bottom: 1.5rem; }
+  .authors { display: flex; flex-wrap: wrap; gap: 6px 0; justify-content: center; margin-bottom: 0.4rem; font-size: 15px; }
+  .author { color: var(--color-text-info); text-decoration: none; padding: 0 10px; border-right: 0.5px solid var(--color-border-tertiary); }
+  .author:last-child { border-right: none; }
+  .author:hover { text-decoration: underline; }
+  .affiliation { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 0.5rem; }
+  .links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .link-btn { display: flex; align-items: center; gap: 8px; padding: 9px 20px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); text-decoration: none; font-size: 14px; font-weight: 500; transition: background 0.15s; cursor: pointer; }
+  .link-btn:hover { background: var(--color-background-secondary); }
+  .link-icon { width: 18px; height: 18px; flex-shrink: 0; }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 0 0 2rem; }
+  .section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-tertiary); margin-bottom: 0.75rem; }
+  .abstract { font-size: 15px; line-height: 1.8; color: var(--color-text-secondary); margin-bottom: 2.5rem; text-align: justify; }
+  .figure-wrap { border-radius: var(--border-radius-lg); overflow: hidden; border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); margin-bottom: 2.5rem; }
+  .figure-placeholder { width: 100%; aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+  .figure-caption { padding: 0.75rem 1rem; font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .header { text-align: center; margin-bottom: 2.5rem; }
+  .equal { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 1.5rem; }
+  svg.icon path, svg.icon rect, svg.icon circle, svg.icon polyline, svg.icon line { stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .citation-block { border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); overflow: hidden; }
+  .citation-header { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .citation-header span { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-tertiary); }
+  .copy-btn { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-text-secondary); background: none; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 4px 10px; cursor: pointer; transition: background 0.15s; }
+  .copy-btn:hover { background: var(--color-background-primary); }
+  .bibtex { font-family: var(--font-mono); font-size: 13px; line-height: 1.7; color: var(--color-text-secondary); padding: 1rem; white-space: pre; overflow-x: auto; margin: 0; }
+  .videos-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 2.5rem; }
+  .video-item { display: flex; flex-direction: column; gap: 10px; }
+  .video-placeholder { width: 100%; aspect-ratio: 16/9; border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--color-text-tertiary); position: relative; overflow: hidden; }
+  .play-btn { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--color-border-secondary); display: flex; align-items: center; justify-content: center; }
+  .play-btn svg { margin-left: 3px; }
+  .video-label { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); text-align: center; }
+  .video-badge { position: absolute; top: 10px; left: 10px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 8px; border-radius: var(--border-radius-md); }
+  .badge-real { background: var(--color-background-success); color: var(--color-text-success); }
+  .badge-synth { background: var(--color-background-info); color: var(--color-text-info); }
+  .footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 0.5px solid var(--color-border-tertiary); text-align: center; font-size: 12px; color: var(--color-text-tertiary); }
+  .footer a { color: var(--color-text-tertiary); text-decoration: none; }
+  .footer a:hover { color: var(--color-text-secondary); text-decoration: underline; }
+</style>
+
+<div class="page">
+  <div class="header">
+    <div class="conference">2026 International Conference on Automatic Face and Gesture Recognition (FG)</div>
+    <h1 class="title">Prompt-to-Gesture: Measuring the Capabilities of Image-to-Video Deictic Gesture Generation</h1>
+    <div class="authors">
+      <a target="_blank" href="https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/ali.html" class="author">Hassan Ali<sup>1</sup></a>
+      <a target="_blank" href="https://www.uantwerpen.be/en/staff/doreen-jirak_26710/" class="author">Doreen Jirak<sup>2</sup></a>
+      <a href="#" class="author">Luca Müller<sup>1</sup></a>
+      <a target="_blank" href="https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html" class="author">Stefan Wermter<sup>1</sup></a>
+    </div>
+    <div class="affiliation"><sup>1</sup> Knowledge Technology Group, Department of Informatics, University of Hamburg, Germany</div>
+    <div class="affiliation"><sup>2</sup> Behavioral Lab, Department of Product Development, University of Antwerp, Belgium</div>
+    <div class="links">
+      <a href="#" class="link-btn">
+        <svg class="link-icon icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Paper
+      </a>
+      <a href="#" class="link-btn">
+        <svg class="link-icon icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        Code
+      </a>
+      <a href="#" class="link-btn">
+        <svg class="link-icon icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        Dataset
+      </a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-label">Abstract</div>
+  <p class="abstract">Abstract—Gesture recognition research, unlike NLP, continues to face acute data scarcity, with progress constrained by the need for costly human recordings or image processing approaches that cannot generate authentic variability in the gestures themselves. Recent advancements in image-to-video foundation models have enabled the generation of photorealistic, semantically rich videos guided by natural language. These capabilities open up new possibilities for creating effort-free synthetic data, raising the critical question of whether video Generative AI models can augment and complement traditional human-generated gesture data. In this paper, we introduce and analyze prompt-based video generation to construct a realistic deictic gestures dataset and rigorously evaluate its effectiveness for downstream tasks. We propose a data generation pipeline that produces deictic gestures from a small number of reference samples collected from human participants, providing an accessible approach that can be leveraged both within and beyond the machine learning community. Our results demonstrate that the synthetic gestures not only align closely with real ones in terms of visual fidelity but also introduce meaningful variability and novelty that enrich the original data, further supported by superior performance of various deep models using a mixed dataset. These findings highlight that image-to-video techniques, even in their early stages, offer a powerful zero-shot approach to gesture synthesis with clear benefits for downstream tasks.</p>
+
+  <div class="figure-wrap">
+    <div class="figure-placeholder">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.4"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><polyline points="21 15 16 10 5 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span style="font-size: 13px;">Add your figure or diagram here</span>
+    </div>
+    <div class="figure-caption">Fig. 1: Examples of real (left) and synthetic (right) deictic gestures from our dataset, depicting a person pointing to objects in a lab environment. The face of the participant has been replaced with a synthetic one to preserve anonymity.</div>
+  </div>
+
+  <div class="section-label">Results</div>
+  <div class="videos-row">
+    <div class="video-item">
+      <div class="video-placeholder">
+        <div class="video-badge badge-real">Real</div>
+        <div class="play-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span style="font-size: 12px;">Add video here</span>
+      </div>
+      <div class="video-label">Real video</div>
+    </div>
+    <div class="video-item">
+      <div class="video-placeholder">
+        <div class="video-badge badge-synth">Synthetic</div>
+        <div class="play-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span style="font-size: 12px;">Add video here</span>
+      </div>
+      <div class="video-label">Synthetic video</div>
+    </div>
+  </div>
+
+  <div class="section-label">Citation</div>
+  <div class="citation-block">
+    <div class="citation-header">
+      <span>BibTeX</span>
+      <button class="copy-btn" onclick="
+        const text = document.getElementById('bibtex').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          this.innerText = 'Copied!';
+          setTimeout(() => this.innerHTML = '<svg width=&quot;12&quot; height=&quot;12&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;><rect x=&quot;9&quot; y=&quot;9&quot; width=&quot;13&quot; height=&quot;13&quot; rx=&quot;2&quot;/><path d=&quot;M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1&quot;/></svg> Copy', 2000);
+        });
+      ">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy
+      </button>
+    </div>
+    <pre class="bibtex" id="bibtex">@inproceedings{ali_2026_prompttogesture,
+  title     = {2026 International Conference on Automatic Face and Gesture Recognition (FG)},
+  author    = {Hassan Ali, Doreen Jirak, Luca Müller, Stefan Wermter},
+  booktitle = {2026 International Conference on Automatic Face and Gesture Recognition (FG)},
+  year      = {2026},
+  volume    = {37},
+  publisher = {IEEE}
+}</pre>
+  </div>
+
+  <footer class="footer">
+    Website template generated by <a href="https://claude.ai" target="_blank">Claude AI</a>
+  </footer>
+</div>
